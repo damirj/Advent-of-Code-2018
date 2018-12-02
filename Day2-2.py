@@ -3,29 +3,28 @@ input = open("Day2/Input.txt", "r")
 input_content = input.read()
 input_list = input_content.split()
 
-def FindCorrectBoxes(input_list):
-    string_size = len(input_list[0])
-    correct_box_value = []
-    
+def find_correct_boxes(input_list):    
     for ind, value in enumerate(input_list):
         for value_next in input_list[ind+1:]:
-            count_letters = 0
-            not_match = []
-            for index in range(string_size):
-                if value[index] == value_next[index]:
-                    count_letters += 1
-                else:
-                    not_match.append(index)
-                    if len(not_match) > 1:
-                        continue
-
-            if count_letters == (string_size-1):
-                    correct_box_value.append(value[:not_match[0]] + value[not_match[0]+1:])
+            differing_char_index = string_comparison(value, value_next)
+            if differing_char_index:
+                return remove_differing_char(value, differing_char_index)
                     
-            if ind == len(input_list)-2:
-                return correct_box_value   
+        if ind == len(input_list)-2:
+            return None
 
-print(FindCorrectBoxes(input_list))
+def string_comparison(first, second):
+    differing_char_index = []
+    for index in range(len(first)):
+        if first[index] != second[index]:
+            differing_char_index.append(index)
+            if len(differing_char_index) > 1:
+                return None
 
+    return differing_char_index[0]
 
-            
+def remove_differing_char(correct_box_ID, index):
+    common_letters_correct_box = correct_box_ID[:index] + correct_box_ID[index + 1:]
+    return common_letters_correct_box
+    
+print(find_correct_boxes(input_list))
