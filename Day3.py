@@ -6,19 +6,9 @@ input_content = input.read()
 input_list = input_content.split("\n")
 
 def parse_input(input_list):
-    new_list = input_list
-    for index, value in enumerate(input_list):
-        new_list[index] = value.split()
-        new_list[index].remove('@')
-        new_list[index][0] = new_list[index][0][1:]
-        new_list[index][1] = new_list[index][1][:-1]
-        new_list[index][1] = new_list[index][1].split(",")
-        new_list[index][2] = new_list[index][2].split("x")
-        new_list[index][0] = int(new_list[index][0])
-        new_list[index][0] = [new_list[index][0]]
-        new_list[index] = list(chain.from_iterable(new_list[index]))
-        new_list[index] = list(map(int, new_list[index]))
-    return new_list
+    input_list = [re.findall(r'\d+', x) for x in input_list] 
+    input_list = [list(map(int, x)) for x in input_list]
+    return input_list
 
 def fill_rectangle(input_list):
     elven_claims = np.zeros((1500, 1500))
